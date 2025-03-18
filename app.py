@@ -24,7 +24,7 @@ def main():
         - **Pace**: Number of possessions per 40 minutes
         
         The model calculates the difference in these metrics between the two teams to predict the final margin.
-        
+        The predictions are home/away AGNOSTIC, so predicted margin will be the same regardless of which team you enter as Team 1 or Team 2. 
         """)
         
         # Add model variable importance visualization
