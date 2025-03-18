@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from predict import load_model_and_scaler, predict_margin, calculate_spread_probability
+from predict import predict_margin, calculate_spread_probability
+import pickle
 
 def main():
     st.title("College Basketball Game Predictor")
@@ -23,6 +24,40 @@ def main():
         - **Pace**: Number of possessions per 40 minutes
         
         The model calculates the difference in these metrics between the two teams to predict the final margin.
+        
+        """)
+        
+        # Add model variable importance visualization
+        st.subheader("Model Feature Importance")
+        
+        # Load model to get feature importance
+        with open('margin_predictor_xgboost_neg_root_mean_squared_error.pkl', 'rb') as f:
+            model_data = pickle.load(f)
+        
+        model = model_data['model']
+        
+        # Get feature importance
+        feature_names = [
+            'SOS Difference', '2PA Difference', '2P% Difference', 
+            '3PA Difference', '3P% Difference', 'FTA Difference',
+            'FT% Difference', 'Turnover Margin Difference', 
+            'Rebound Margin Difference', 'Pace Difference'
+        ]
+        
+        importance = model.feature_importances_
+        
+        # Create DataFrame for visualization
+        importance_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Importance': importance
+        }).sort_values('Importance', ascending=False)
+        
+        # Display bar chart
+        st.bar_chart(importance_df.set_index('Feature'))
+        
+        st.markdown("""
+        The chart above shows the relative importance of each feature in the prediction model.
+        Higher values indicate features that have more influence on the predicted margin.
         """)
     
     # Load team names for dropdowns
