@@ -86,7 +86,7 @@ def main():
     if st.button("Predict Game"):
         try:
             # Calculate prediction
-            margin = predict_margin(team1, team2)
+            margin, explanation = predict_margin(team1, team2)
             prob_over = calculate_spread_probability(float(margin), float(market_spread))
             
             # Display results in an expander
