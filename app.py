@@ -6,6 +6,25 @@ from predict import load_model_and_scaler, predict_margin, calculate_spread_prob
 def main():
     st.title("College Basketball Game Predictor")
     
+    # Add description of prediction variables
+    with st.expander("About the Prediction Model"):
+        st.markdown("""
+        This model predicts game outcomes based on the following team metrics:
+        
+        - **Strength of Schedule (SOS)**: Difficulty of a team's schedule
+        - **2-Point Attempts (2PA)**: Average number of 2-point shots attempted per game
+        - **2-Point Percentage (2P%)**: Success rate on 2-point shots
+        - **3-Point Attempts (3PA)**: Average number of 3-point shots attempted per game
+        - **3-Point Percentage (3P%)**: Success rate on 3-point shots
+        - **Free Throw Attempts (FTA)**: Average number of free throws attempted per game
+        - **Free Throw Percentage (FT%)**: Success rate on free throws
+        - **Turnover Margin**: Difference between turnovers forced and committed
+        - **Rebound Margin**: Difference between rebounds collected and allowed
+        - **Pace**: Number of possessions per 40 minutes
+        
+        The model calculates the difference in these metrics between the two teams to predict the final margin.
+        """)
+    
     # Load team names for dropdowns
     metrics_df = pd.read_csv('team_metrics_analysis.csv')
     team_list = sorted(metrics_df['School'].unique())
